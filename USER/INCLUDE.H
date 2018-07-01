@@ -18,11 +18,5 @@ typedef enum
 	SUCCESS		,
 }RETURN_STATUS;
 
-typedef enum
-{
-	NON = 0		,
-	NEG			,
-	POS			,
-}DIRECTION_TYPE;
 
 #endif																										//__INCLUDE_H_

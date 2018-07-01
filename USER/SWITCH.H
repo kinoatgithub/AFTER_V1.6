@@ -3,6 +3,6 @@
 #include "INCLUDE.H"
 
 void SWITCH_INIT( void );
-void SCAN_SWITCH( void );
+bit SCAN_SWITCH( void );
 
 #endif
