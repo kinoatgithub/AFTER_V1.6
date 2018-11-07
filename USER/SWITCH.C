@@ -9,25 +9,20 @@ sbit	switch_pin  =  P3^5;
 
 void SWITCH_INIT( void )
 {
-	P3M0 |= 0x20 ;																	//P3.5设置为开漏输出
-	P3M1 |= 0x20 ;
+	P3M0 &= ~0x20;																		//P3.5按钮设置为准双向弱上拉；
+	P3M1 &= ~0x20;
 }
 
 bit SCAN_SWITCH( void )
 {
-	static bit last_switch_status;
-	if( switch_pin == last_switch_status )
+	if( switch_pin == 0 )
 	{
-		if( switch_pin == 0 )
-		{
-			last_switch_status = SET_MARK;
-		}
-		else
-		{
-			last_switch_status = RSE_MARK;
-		}
+		return SET_MARK;
 	}
-	return last_switch_status;
+	else
+	{
+		return RSE_MARK;
+	}
 }
 
 

@@ -2,8 +2,8 @@
 #include "TIME_COUNTING.H"
 #include "SWITCH.H"
 
-#define POS_ROTATE( x ) ((( x ) >> 1 ) | (( x ) << 3 ))
-#define NEG_ROTATE( x ) ((( x ) << 1 ) | (( x ) >> 3 ))
+#define POS_ROTATE( x ) ((( x ) << 1 ) | (( x ) >> 3 ))
+#define NEG_ROTATE( x ) ((( x ) >> 1 ) | (( x ) << 3 ))
 
 u16 GTR;
 bit PUSH_BUTTON;
@@ -29,7 +29,8 @@ void MOTO_DRIVER_INIT( void )
 	TIME_COUNT_INIT();
 	SWITCH_INIT();
 	SET_PHASE( 0 );	
-	P3M0 |= 0x0F;									//驱动达林顿管必须设置P3.0 ~ P3.3为推挽输出
+	P3M0 |= 0x0F;																				//驱动达林顿管必须设置P3.0 ~ P3.3为推挽输出
+	while( SCAN_SWITCH() == RSE_MARK );
 }
 
 void ONE_PULSE_DRIVING_CHECK( void )
