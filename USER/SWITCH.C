@@ -1,34 +1,66 @@
 #include "SWITCH.H"
 #include "TIME_COUNTING.H"
 
-extern u16 GTR;
-extern bit PUSH_BUTTON;
+#define switch_pin_mask				5										//P3.5需要往左偏移5位
+#define switch_pin_bit_set		( 0x01 << switch_pin_mask )
+#define switch_pin_bit_rse		( ~ switch_pin_bit_set )
 
-sbit	switch_pin  =  P3^5;
+extern bit PUSH_BUTTON ;
+extern bit SWTITCH_SCAN_TIMESUP_FLAG ;
 
+sbit	switch_pin  =  P3^5 ;
 
-void SWITCH_INIT( void )
+void SWITCH_PIN_INIT( void )
 {
-	P3M0 |= 0x20 ;																	//P3.5设置为开漏输出
-	P3M1 |= 0x20 ;
+	P3M0 &= switch_pin_bit_rse ;													 //按钮引脚设置为准双向或高阻态	
 }
 
-bit SCAN_SWITCH( void )
+SYS_STATUS_TYPE SCAN_SWITCH( void )
 {
-	static bit last_switch_status;
-	if( switch_pin == last_switch_status )
+	static	bit last_step ;
+	static	bit floating_pin_status , pullup_pin_status ;
+	static	SYS_STATUS_TYPE 
+					last_button_status , 
+					now_button_status ,
+					temp_button_status ;
+	if( SWTITCH_SCAN_TIMESUP_FLAG != RSE_MARK )
 	{
-		if( switch_pin == 0 )
+		if( last_step != SET_MARK )
 		{
-			last_switch_status = SET_MARK;
+			floating_pin_status = switch_pin ;
+			P3M1 &= switch_pin_bit_rse ;											 //按钮引脚设置为准双向	
+			if( floating_pin_status != SET_MARK )
+			{
+				if( pullup_pin_status != SET_MARK )
+					now_button_status = BUTTON_ACT ;
+				else
+					now_button_status = POWER_DOWN ;
+			}
+			else
+				now_button_status = NORMAL ;
 		}
 		else
 		{
-			last_switch_status = RSE_MARK;
+			pullup_pin_status = switch_pin ;
+			P3M1 |= switch_pin_bit_set ;											//按钮引脚设置为高阻输入
+		}
+		last_step = ~last_step ;
+		SWTITCH_SCAN_TIMESUP_FLAG = RSE_MARK ;
+		if( last_button_status != now_button_status )
+		{
+			temp_button_status = last_button_status ;
+			last_button_status = now_button_status ;
+			return temp_button_status ;
 		}
 	}
-	return last_switch_status;
+	return last_button_status ;
 }
+		
+
+
+	
+	
+
 
 
 

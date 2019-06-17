@@ -16,7 +16,18 @@ typedef enum
 {
 	ERROR = 0	,
 	SUCCESS		,
-}RETURN_STATUS;
+}RETURN_STATUS ;
+
+typedef enum 
+{
+	NORMAL ,
+	AUTO_ACCELERATE ,
+	STILL_NORMAL ,
+	POWER_DOWN ,
+	STILL_POWER_DOWN ,
+	BUTTON_ACT ,
+	STILL_BUTTON_ACT
+}SYS_STATUS_TYPE;
 
 
 #endif																										//__INCLUDE_H_

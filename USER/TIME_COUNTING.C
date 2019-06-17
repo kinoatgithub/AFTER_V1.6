@@ -5,19 +5,20 @@
 #define	T0H_reload_value	( T0_reload_value >> 8 )
 #define T0L_reload_value	( T0_reload_value & 0x00FF )
 
-extern u16 GTR;
-bit ONE_PULSE_TIMESUP_FLAG;
-u16 ONE_PULSE_DELAY , ACCELERATION_DELAY;
-
+u16 TIME_INC ;
+bit SWTITCH_SCAN_TIMESUP_FLAG ;
+u16 ONE_PULSE_DELAY , ACCELERATION_DELAY ;
+TIME_TYPE SV , PV ;
 
 void T0_DIVIER( void ) interrupt 1
 {
-	ACCELERATION_DELAY++;
-	ONE_PULSE_DELAY++;
+	ACCELERATION_DELAY++ ;
+	ONE_PULSE_DELAY++ ;
 	if( ONE_PULSE_PERIOD <= ONE_PULSE_DELAY )
 	{
-		ONE_PULSE_TIMESUP_FLAG = SET_MARK;
-		ONE_PULSE_DELAY = 0;
+		TIME_INC++ ;
+		ONE_PULSE_DELAY = 0 ;
+		SWTITCH_SCAN_TIMESUP_FLAG = SET_MARK ;
 	}
 }
 
@@ -35,9 +36,10 @@ void TIME_COUNT_INIT(void)
 
 void SOFT_DELAY( u16 times )
 {
+	u16 temp ;
 	while( times-- )
 	{
-		GTR = SOFT_DELAY_UNIT; 
-		while( GTR-- );
+		temp = SOFT_DELAY_UNIT; 
+		while( temp-- );
 	}
 }
