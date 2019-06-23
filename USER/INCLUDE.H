@@ -14,19 +14,17 @@
 
 typedef enum
 {
-	ERROR = 0	,
-	SUCCESS		,
-}RETURN_STATUS ;
+	NEG_DIR = 0 ,
+	POS_DIR = 1 ,
+}DIR_TYPE ;
 
 typedef enum 
 {
-	NORMAL ,
+	NORMAL = 0 ,
 	AUTO_ACCELERATE ,
 	STILL_NORMAL ,
 	POWER_DOWN ,
-	STILL_POWER_DOWN ,
 	BUTTON_ACT ,
-	STILL_BUTTON_ACT
 }SYS_STATUS_TYPE;
 
 
